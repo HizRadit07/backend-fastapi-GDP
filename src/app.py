@@ -1,13 +1,25 @@
+import imp
 import os
 import pathlib
 from dotenv import load_dotenv
 from functools import lru_cache
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from .airtable import Airtable
 
 BASE_DIR = pathlib.Path(__file__).parent # src
 
 app = FastAPI()
+
+origins =["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @lru_cache()
 def cache_dotenv():
