@@ -2,7 +2,7 @@ import os
 import pathlib
 from dotenv import load_dotenv
 from functools import lru_cache
-from fastapi import FastAPI
+from fastapi import FastAPI, Body
 from fastapi.middleware.cors import CORSMiddleware
 from .airtable import Airtable
 from .update_class import UpdateAbout, UpdateExperience, UpdateUser
@@ -106,7 +106,19 @@ def get_experience_by_user_name(user_name:str):
     return res
 
 @app.patch("/experience/{experience_id}")
-def update_experience_by_id(experience_id: str, update_experience: UpdateExperience):
+def update_experience_by_id(experience_id: str, update_experience: UpdateExperience = Body(
+    default=None,
+    example={
+  "company_name": "GDP Labs",
+  "job_title": "Software Engineering Intern",
+  "job_type": "internship",
+  "date_start": "2022-06-02",
+  "date_end": "2022-08-05",
+  "location": "Indonesia",
+  "description": "I worked here",
+  "company_logo_url": "https://picsum.photos/200"
+}
+)):
     airtable_client = Airtable(
         base_id=AIRTABLE_BASE_ID,
         api_key=AIRTABLE_API_KEY,

@@ -117,7 +117,7 @@ class Airtable:
         return r.json()
 
     def update_experience_by_id(self, experience_id:str, experience_data:UpdateExperience):
-        endpoint = f"https://api.airtable.com/v0/{self.base_id}/About"
+        endpoint = f"https://api.airtable.com/v0/{self.base_id}/Experience"
         headers={
             "Authorization": f"Bearer {self.api_key}",
             "Content-type": "application/json"
@@ -130,7 +130,7 @@ class Airtable:
             }],
             "Job Title": experience_data.job_title,
             "Job Type": experience_data.job_type,
-            "Date Start": experience_data.date_start,
+            "Date Start": experience_data.date_start, # date must be in format "YYYY-MM-DD or ISO 8061 format"
             "Date End": experience_data.date_end,
             "Location": experience_data.location,
             "Description": experience_data.description
