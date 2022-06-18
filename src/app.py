@@ -6,6 +6,7 @@ from fastapi import FastAPI, Body
 from fastapi.middleware.cors import CORSMiddleware
 from .airtable import Airtable
 from .update_class import UpdateAbout, UpdateExperience, UpdateUser
+from .create_class import NewExperience
 
 BASE_DIR = pathlib.Path(__file__).parent # src
 
@@ -58,11 +59,7 @@ def get_user_by_user_name(user_name:str):
 
 
 @app.patch("/user/{user_id}")
-def update_user_by_id(user_id:str, update_user: UpdateUser):
-    for attr in vars(update_user): #simple checking that requires firstname and lastname to always be there
-        if vars(update_user)[attr] == None:
-          return {"error in parsing request": "required first name and last name"}
-    
+def update_user_by_id(user_id:str, update_user: UpdateUser): 
     airtable_client = Airtable(
         base_id=AIRTABLE_BASE_ID,
         api_key=AIRTABLE_API_KEY,
@@ -124,4 +121,22 @@ def update_experience_by_id(experience_id: str, update_experience: UpdateExperie
         api_key=AIRTABLE_API_KEY,
     )
     res = airtable_client.update_experience_by_id(experience_id, update_experience)
+    return res
+
+@app.post("/experience/{user_id}")
+def create_new_experience_for_user(user_id: str, new_experience:NewExperience):
+    airtable_client = Airtable(
+        base_id=AIRTABLE_BASE_ID,
+        api_key=AIRTABLE_API_KEY,
+    )
+    res = airtable_client.create_new_experience_for_user(user_id, new_experience)    
+    return res
+
+@app.delete("/experience/{experience_id}")
+def delete_experience_by_id(experience_id: str):
+    airtable_client = Airtable(
+        base_id=AIRTABLE_BASE_ID,
+        api_key=AIRTABLE_API_KEY,
+    )
+    res = airtable_client.delete_experience_by_id(experience_id)   
     return res
