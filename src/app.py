@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .airtable import Airtable
 from .update_class import UpdateAbout, UpdateExperience, UpdateUser
 from .create_class import NewExperience
+from .firebase import *
 
 BASE_DIR = pathlib.Path(__file__).parent # src
 
@@ -56,8 +57,6 @@ def get_user_by_user_name(user_name:str):
     res = airtable_client.get_user_by_user_name(user_name)
     return res
 
-
-
 @app.patch("/user/{user_id}")
 def update_user_by_id(user_id:str, update_user: UpdateUser): 
     airtable_client = Airtable(
@@ -65,6 +64,19 @@ def update_user_by_id(user_id:str, update_user: UpdateUser):
         api_key=AIRTABLE_API_KEY,
     )
     res = airtable_client.update_user_by_id(user_id, update_user.first_name, update_user.last_name)
+    return res
+
+"""
+TODO: add authentication to firebase methods
+"""
+@app.get("/firebase/user/id/{user_id}")
+def get_user_by_id_firebase(user_id:str):
+    res = firebase_get_user_by_id(user_id)
+    return res
+
+@app.get("/firebase/user/name/{user_name}")
+def get_user_by_name_firebase(user_name: str):
+    res = firebase_get_user_by_name(user_name)
     return res
 
 """
@@ -89,6 +101,11 @@ def update_about_by_id(about_id: str, update_about:UpdateAbout):
     )
     res = airtable_client.update_about_by_id(about_id, update_about.description)
     return res   
+
+@app.get("/firebase/about/{user_id}")
+def get_about_by_user_id_firebase(user_id: str):
+    res = firebase_get_about_by_user_id(user_id)
+    return res
 
 """
 EXPERIENCE ENDPOINTS
@@ -139,4 +156,9 @@ def delete_experience_by_id(experience_id: str):
         api_key=AIRTABLE_API_KEY,
     )
     res = airtable_client.delete_experience_by_id(experience_id)   
+    return res
+
+@app.get("/firebase/experience/{user_id}")
+def get_experience_by_user_id_firebase(user_id:str):
+    res = firebase_get_experience_by_user_id(user_id)
     return res
