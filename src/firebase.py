@@ -4,6 +4,8 @@ import os
 from dotenv import load_dotenv
 from google.cloud.firestore import Client as FirestoreClient
 from .create_class import NewExperience
+from .update_class import UpdateAbout, UpdateExperience, UpdateUser
+from .util import *
 
 load_dotenv()
 
@@ -77,3 +79,61 @@ def firebase_create_new_experience_for_user(user_id:str, exp_data: NewExperience
   except:
     return {"error": "fail to add new data"}
 
+"""
+FIREBASE UPDATE METHOD
+"""
+def firebase_update_user_by_id(user_id:str, update_user:UpdateUser):
+  if (update_user.first_name == None or update_user.last_name == None):
+      return {"error": "require first name & last name"}
+
+  data = {
+    "First Name": update_user.first_name,
+    "Last Name": update_user.last_name,
+    "Name": str(update_user.first_name+" "+update_user.last_name)
+  }
+
+  try:
+    db.collection("User").document(user_id).update(data)
+    return {"status":"sucess", "data":data}
+  except:
+    return {"error": "fail to add new data"} 
+ 
+def firebase_update_about_by_id(about_id:str, update_about:UpdateAbout):
+  if (update_about.description == None):
+    return {"error": "require description"}
+  data = {
+    "Description": update_about.description
+  }
+  try:
+    db.collection("About").document(about_id).update(data)
+    return {"status":"sucess", "data":data}
+  except:
+    return {"error": "fail to add new data"}
+
+def firebase_update_experience_by_id(experience_id: str, update_experience: UpdateExperience):
+  data = {
+    "Company Logo": update_experience.company_logo_url,
+    "Company Name": update_experience.company_name,
+    "Date End": update_experience.date_end,
+    "Date Start": update_experience.date_start,
+    "Description": update_experience.description,
+    "Job Title": update_experience.job_title,
+    "Job Type": update_experience.job_type,
+    "Location": update_experience.location,
+  }
+  data = remove_none_data(data) #remove key with none value to not update
+  try:
+    db.collection("Experience").document(experience_id).update(data)
+    return {"status":"sucess", "data":data}
+  except:
+    return {"error": "fail to add new data"}
+
+"""
+FIREBASE DELETE METHODS
+"""
+def firebase_delete_experience_by_id(experience_id: str):
+  try:
+    db.collection("Experience").document(experience_id).delete()
+    return {"status":"sucess"}
+  except:
+    return {"error": "fail to add new data"}

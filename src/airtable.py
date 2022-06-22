@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from os import remove
 import requests
 from .util import *
 from .update_class import UpdateExperience

@@ -79,6 +79,11 @@ def get_user_by_name_firebase(user_name: str):
     res = firebase_get_user_by_name(user_name)
     return res
 
+@app.patch("/firebase/user/{user_id}")
+def update_user_by_id_firebase(user_id:str, update_user:UpdateUser):
+    res = firebase_update_user_by_id(user_id, update_user)
+    return res
+
 """
 ABOUT ENDPOINTS
 """
@@ -93,7 +98,7 @@ def get_about_by_user_name(user_name:str):
 
 
 
-@app.patch("/about/id/{about_id}")
+@app.patch("/about/{about_id}")
 def update_about_by_id(about_id: str, update_about:UpdateAbout):
     airtable_client = Airtable(
         base_id=AIRTABLE_BASE_ID,
@@ -105,6 +110,11 @@ def update_about_by_id(about_id: str, update_about:UpdateAbout):
 @app.get("/firebase/about/{user_id}")
 def get_about_by_user_id_firebase(user_id: str):
     res = firebase_get_about_by_user_id(user_id)
+    return res
+
+@app.patch("/firebase/about/{about_id}")
+def update_about_by_id_firebase(about_id: str, update_about: UpdateAbout):
+    res = firebase_update_about_by_id(about_id, update_about)
     return res
 
 """
@@ -161,4 +171,19 @@ def delete_experience_by_id(experience_id: str):
 @app.get("/firebase/experience/{user_id}")
 def get_experience_by_user_id_firebase(user_id:str):
     res = firebase_get_experience_by_user_id(user_id)
+    return res
+
+@app.post("/firebase/experience/{user_id}")
+def create_experience_for_user_firebase(user_id: str, new_experience: NewExperience):
+    res = firebase_create_new_experience_for_user(user_id, new_experience)
+    return res
+
+@app.patch("/firebase/experience/{experience_id}")
+def update_experience_by_id_firebase(experience_id: str, update_experience: UpdateExperience):
+    res = firebase_update_experience_by_id(experience_id, update_experience)
+    return res
+
+@app.delete("/firebase/experience/{experience_id}")
+def delete_experience_by_id_firebase(experience_id:str):
+    res = firebase_delete_experience_by_id(experience_id)
     return res
