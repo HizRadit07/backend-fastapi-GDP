@@ -2,12 +2,13 @@ import os
 import pathlib
 from dotenv import load_dotenv
 from functools import lru_cache
-from fastapi import FastAPI, Body
+from fastapi import FastAPI, Body, Header
 from fastapi.middleware.cors import CORSMiddleware
 from .airtable import Airtable
 from .update_class import UpdateAbout, UpdateExperience, UpdateUser
 from .create_class import NewExperience
 from .firebase import *
+from .authentication import backend_verify_id_token
 
 BASE_DIR = pathlib.Path(__file__).parent # src
 
@@ -75,7 +76,10 @@ def get_user_by_id_firebase(user_id:str):
     return res
 
 @app.get("/firebase/user/name/{user_name}")
-def get_user_by_name_firebase(user_name: str):
+def get_user_by_name_firebase(user_name: str, id_token: str = Header(default=None)):
+    token_verified = backend_verify_id_token(id_token)
+    if (token_verified["error"] != None):
+        return token_verified
     res = firebase_get_user_by_name(user_name)
     return res
 

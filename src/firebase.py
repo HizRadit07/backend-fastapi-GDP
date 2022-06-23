@@ -24,10 +24,9 @@ cert = {
 
 
 cred = credentials.Certificate(cert=cert)
-firebase_admin.initialize_app(cred)
+firebase_app = firebase_admin.initialize_app(cred)
 
 db: FirestoreClient = firestore.client()
-
 """
 FIREBASE GET METHODS
 """
