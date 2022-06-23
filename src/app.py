@@ -40,7 +40,7 @@ def home_view():
 """
 USER ENDPOINTS
 """
-@app.get("/user/id/{user_id}")
+@app.get("/user/id/{user_id}", tags=["User Endpoints"])
 def get_user_by_id(user_id:str):
     airtable_client = Airtable(
         base_id=AIRTABLE_BASE_ID,
@@ -49,7 +49,7 @@ def get_user_by_id(user_id:str):
     res = airtable_client.get_user_by_id(user_id)
     return res
 
-@app.get("/user/name/{user_name}")
+@app.get("/user/name/{user_name}", tags=["User Endpoints"])
 def get_user_by_user_name(user_name:str):
     airtable_client = Airtable(
         base_id=AIRTABLE_BASE_ID,
@@ -58,7 +58,7 @@ def get_user_by_user_name(user_name:str):
     res = airtable_client.get_user_by_user_name(user_name)
     return res
 
-@app.patch("/user/{user_id}")
+@app.patch("/user/{user_id}", tags=["User Endpoints"])
 def update_user_by_id(user_id:str, update_user: UpdateUser): 
     airtable_client = Airtable(
         base_id=AIRTABLE_BASE_ID,
@@ -70,12 +70,12 @@ def update_user_by_id(user_id:str, update_user: UpdateUser):
 """
 TODO: add authentication to firebase methods
 """
-@app.get("/firebase/user/id/{user_id}")
+@app.get("/firebase/user/id/{user_id}", tags=["User Endpoints"])
 def get_user_by_id_firebase(user_id:str):
     res = firebase_get_user_by_id(user_id)
     return res
 
-@app.get("/firebase/user/name/{user_name}")
+@app.get("/firebase/user/name/{user_name}", tags=["User Endpoints"])
 def get_user_by_name_firebase(user_name: str, id_token: str = Header(default=None)):
     token_verified = backend_verify_id_token(id_token)
     if (token_verified["error"] != None):
@@ -83,7 +83,7 @@ def get_user_by_name_firebase(user_name: str, id_token: str = Header(default=Non
     res = firebase_get_user_by_name(user_name)
     return res
 
-@app.patch("/firebase/user/{user_id}")
+@app.patch("/firebase/user/{user_id}", tags=["User Endpoints"])
 def update_user_by_id_firebase(user_id:str, update_user:UpdateUser):
     res = firebase_update_user_by_id(user_id, update_user)
     return res
@@ -91,7 +91,7 @@ def update_user_by_id_firebase(user_id:str, update_user:UpdateUser):
 """
 ABOUT ENDPOINTS
 """
-@app.get("/about/{user_name}")
+@app.get("/about/{user_name}", tags=["About Endpoints"])
 def get_about_by_user_name(user_name:str):
     airtable_client = Airtable(
         base_id=AIRTABLE_BASE_ID,
@@ -102,7 +102,7 @@ def get_about_by_user_name(user_name:str):
 
 
 
-@app.patch("/about/{about_id}")
+@app.patch("/about/{about_id}", tags=["About Endpoints"])
 def update_about_by_id(about_id: str, update_about:UpdateAbout):
     airtable_client = Airtable(
         base_id=AIRTABLE_BASE_ID,
@@ -111,12 +111,12 @@ def update_about_by_id(about_id: str, update_about:UpdateAbout):
     res = airtable_client.update_about_by_id(about_id, update_about.description)
     return res   
 
-@app.get("/firebase/about/{user_id}")
+@app.get("/firebase/about/{user_id}", tags=["About Endpoints"])
 def get_about_by_user_id_firebase(user_id: str):
     res = firebase_get_about_by_user_id(user_id)
     return res
 
-@app.patch("/firebase/about/{about_id}")
+@app.patch("/firebase/about/{about_id}", tags=["About Endpoints"])
 def update_about_by_id_firebase(about_id: str, update_about: UpdateAbout):
     res = firebase_update_about_by_id(about_id, update_about)
     return res
@@ -124,7 +124,7 @@ def update_about_by_id_firebase(about_id: str, update_about: UpdateAbout):
 """
 EXPERIENCE ENDPOINTS
 """
-@app.get("/experience/{user_name}")
+@app.get("/experience/{user_name}", tags=["Experience Endpoints"])
 def get_experience_by_user_name(user_name:str):
     airtable_client = Airtable(
         base_id=AIRTABLE_BASE_ID,
@@ -133,7 +133,7 @@ def get_experience_by_user_name(user_name:str):
     res = airtable_client.get_experience_by_user_name(user_name)
     return res
 
-@app.patch("/experience/{experience_id}")
+@app.patch("/experience/{experience_id}", tags=["Experience Endpoints"])
 def update_experience_by_id(experience_id: str, update_experience: UpdateExperience = Body(
     default=None,
     example={
@@ -154,7 +154,7 @@ def update_experience_by_id(experience_id: str, update_experience: UpdateExperie
     res = airtable_client.update_experience_by_id(experience_id, update_experience)
     return res
 
-@app.post("/experience/{user_id}")
+@app.post("/experience/{user_id}", tags=["Experience Endpoints"])
 def create_new_experience_for_user(user_id: str, new_experience:NewExperience):
     airtable_client = Airtable(
         base_id=AIRTABLE_BASE_ID,
@@ -163,7 +163,7 @@ def create_new_experience_for_user(user_id: str, new_experience:NewExperience):
     res = airtable_client.create_new_experience_for_user(user_id, new_experience)    
     return res
 
-@app.delete("/experience/{experience_id}")
+@app.delete("/experience/{experience_id}", tags=["Experience Endpoints"])
 def delete_experience_by_id(experience_id: str):
     airtable_client = Airtable(
         base_id=AIRTABLE_BASE_ID,
@@ -172,22 +172,22 @@ def delete_experience_by_id(experience_id: str):
     res = airtable_client.delete_experience_by_id(experience_id)   
     return res
 
-@app.get("/firebase/experience/{user_id}")
+@app.get("/firebase/experience/{user_id}", tags=["Experience Endpoints"])
 def get_experience_by_user_id_firebase(user_id:str):
     res = firebase_get_experience_by_user_id(user_id)
     return res
 
-@app.post("/firebase/experience/{user_id}")
+@app.post("/firebase/experience/{user_id}", tags=["Experience Endpoints"])
 def create_experience_for_user_firebase(user_id: str, new_experience: NewExperience):
     res = firebase_create_new_experience_for_user(user_id, new_experience)
     return res
 
-@app.patch("/firebase/experience/{experience_id}")
+@app.patch("/firebase/experience/{experience_id}", tags=["Experience Endpoints"])
 def update_experience_by_id_firebase(experience_id: str, update_experience: UpdateExperience):
     res = firebase_update_experience_by_id(experience_id, update_experience)
     return res
 
-@app.delete("/firebase/experience/{experience_id}")
+@app.delete("/firebase/experience/{experience_id}", tags=["Experience Endpoints"])
 def delete_experience_by_id_firebase(experience_id:str):
     res = firebase_delete_experience_by_id(experience_id)
     return res
