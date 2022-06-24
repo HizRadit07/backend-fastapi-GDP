@@ -183,9 +183,9 @@ def delete_experience_by_id(experience_id: str):
 
 @app.get("/firebase/experience/{user_id}", tags=["Experience Endpoints"])
 def get_experience_by_user_id_firebase(user_id:str, id_token: str = Header(default=None)):
-    is_token_verified = backend_verify_id_token(id_token)
-    if (is_token_verified["error"] != None):
-        return is_token_verified
+    # is_token_verified = backend_verify_id_token(id_token)
+    # if (is_token_verified["error"] != None):
+    #     return is_token_verified
     res = firebase_get_experience_by_user_id(user_id)
     return res
 
