@@ -55,13 +55,11 @@ def firebase_get_experience_by_user_id(user_id:str):
   list_experience = db.collection("Experience").where("User","==",user_id).get()
   if len(list_experience) == 0:
     return {"error":"experience not found"}
-  dict_experience = {}
-  i = 0
+  arr_experience = []
   for item in list_experience:
-    dict_experience[i] = item.to_dict()
-    i+=1
+    arr_experience.append(item.to_dict())
 
-  return dict_experience 
+  return arr_experience 
 
 """
 FIREBASE POST METHOD
