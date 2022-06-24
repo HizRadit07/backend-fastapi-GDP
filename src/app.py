@@ -69,17 +69,11 @@ def update_user_by_id(user_id:str, update_user: UpdateUser):
 
 @app.get("/firebase/user/id/{user_id}", tags=["User Endpoints"])
 def get_user_by_id_firebase(user_id:str, id_token: str = Header(default=None)):
-    is_token_verified = backend_verify_id_token(id_token)
-    if (is_token_verified["error"] != None):
-        return is_token_verified
     res = firebase_get_user_by_id(user_id)
     return res
 
 @app.get("/firebase/user/name/{user_name}", tags=["User Endpoints"])
 def get_user_by_name_firebase(user_name: str, id_token: str = Header(default=None)):
-    is_token_verified = backend_verify_id_token(id_token)
-    if (is_token_verified["error"] != None):
-        return is_token_verified
     res = firebase_get_user_by_name(user_name)
     return res
 
@@ -116,9 +110,6 @@ def update_about_by_id(about_id: str, update_about:UpdateAbout):
 
 @app.get("/firebase/about/{user_id}", tags=["About Endpoints"])
 def get_about_by_user_id_firebase(user_id: str, id_token: str = Header(default=None)):
-    is_token_verified = backend_verify_id_token(id_token)
-    if (is_token_verified["error"] != None):
-        return is_token_verified
     res = firebase_get_about_by_user_id(user_id)
     return res
 
@@ -183,9 +174,6 @@ def delete_experience_by_id(experience_id: str):
 
 @app.get("/firebase/experience/{user_id}", tags=["Experience Endpoints"])
 def get_experience_by_user_id_firebase(user_id:str, id_token: str = Header(default=None)):
-    # is_token_verified = backend_verify_id_token(id_token)
-    # if (is_token_verified["error"] != None):
-    #     return is_token_verified
     res = firebase_get_experience_by_user_id(user_id)
     return res
 
