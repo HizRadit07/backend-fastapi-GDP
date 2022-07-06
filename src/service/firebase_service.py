@@ -1,11 +1,13 @@
+import imp
 import firebase_admin
 from firebase_admin import credentials, firestore
 import os
 from dotenv import load_dotenv
 from google.cloud.firestore import Client as FirestoreClient
-from .create_class import NewExperience
-from .update_class import UpdateAbout, UpdateExperience, UpdateUser
-from .util import *
+from ..models.experience import NewExperience, UpdateExperience
+from ..models.about import UpdateAbout
+from ..models.user import UpdateUser
+from ..util import *
 
 load_dotenv()
 

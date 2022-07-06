@@ -1,4 +1,4 @@
-from .firebase import firebase_app
+from .firebase_service import firebase_app
 from firebase_admin import auth
 
 

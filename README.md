@@ -1,5 +1,6 @@
 
 # My-Backend-FastAPI-API
+This README is made by using readme.so
 
 This is the source code for my personal backend API part of a lowcode exploration project for my internship at GDP Labs.
 The aim of this API is to explore and familiarize me with technologies such as FastAPI, Firebase, and Airtable with their respective data managing functionalities.
@@ -8,10 +9,25 @@ The aim of this API is to explore and familiarize me with technologies such as F
 # Description
 This project is an API made with FastAPI in order to manage data stored in Airtable and Firebase Firestore. The basic premise of this project
 is to create a sample personal profile page with similar design to linkedin. A prerequisite for this API is to understand Airtable and Firebase Firestore as these are the 2 main platforms
-from which the data will be stored. The data fields managed for each database are as follows:
+from which the data will be stored.
 
-## Airtable:
-Create 3 separate table in a base with the names User, About, and Experience with the following fields
+When used, this API will provide endpoints from which one can do Create, Read, Update, or Delete data (CRUD). Because 
+this API is made using FastAPI, FastAPI provides instant easy documentation that can be accessed when the backend is run.
+
+One can open the documentation by using the /docs endpoint.
+
+Some of the routes for this API is blocked by authentication which requires one to sign in using firebase authentication. 
+For more information, one can check this page https://firebase.google.com/docs/reference/rest/auth?hl=en#section-sign-in-email-password. 
+Basically, it prompts one to sign in to a specific URL using a specific project API key (making sure the project has been initialized on firebase)
+in order to get an id-token which can be added to the header of requests requiring id-token headers with the endpoints provided by this API (see API reference below).
+
+## Setup Airtable
+
+1. Go to www.airtable.com, create an account
+2. Create a new base, this is the main work area for airtable
+3. Create 3 separate table in a base with the names User, About, and Experience with the following fields
+
+note: each table and field name is case sensitive
 
 - User: an instance of a User
     - Name : formula : full name of the user, uses airtable formula data type (can be equated to either number / string), concatenation of the attribute "First Name" and "Last Name"
@@ -37,8 +53,21 @@ Create 3 separate table in a base with the names User, About, and Experience wit
     - Location : string : location of the employment / experience
     - Description : string : description for the employment / experience
 
-## Firebase Firestore:
-Create a firebase project, then in the firestore panel, create a database with 3 collections User, Experience, and About with the following fields
+4. You can find a simple documentation for airtable CRUD services for your base by opening the link www.airtable.com/api
+5. from www.airtable.com/api you can find the environment variable AIRTABLE_BASE_ID
+6. You can get the environment variable AIRTABLE_API_KEY from your airtable profile
+7. There is a public version of the airtable database used for this project, the link is as follow:
+https://airtable.com/shrIx3PDlu4HI6vYo (feel free to copy and use this base)
+
+
+## Setup Firebase Firestore
+1. Create a google account, go to firebase.google.com, go to console
+2. Create a new firebase project
+3. Create a new firebase firestore database
+4. Create a database with 3 collections User, Experience, and About with the following fields
+
+note: all table and field names are case sensitive
+
 - User: an instance of a User
     - Name : string : full name of the user
     - First Name : string : First name of the user
@@ -60,17 +89,24 @@ Create a firebase project, then in the firestore panel, create a database with 3
     - Location : string : location of the employment
     - User : string : id referring to a particular user
 
-
-When used, this API will provide endpoints from which one can do Create, Read, Update, or Delete data (CRUD). Because 
-this API is made using FastAPI, FastAPI provides instant easy documentation that can be accessed when the backend is run.
-
-One can open the documentation by using the /docs endpoint.
-
-Some of the routes for this API is blocked by authentication which requires one to sign in using firebase authentication. 
-For more information, one can check this page https://firebase.google.com/docs/reference/rest/auth?hl=en#section-sign-in-email-password. 
-Basically, it prompts one to sign in to a specific URL using a specific project API key (making sure the project has been initialized on firebase)
-in order to get an id-token which can be added to the header of requests requiring id-token headers with the endpoints provided by this API (see API reference below).
-
+5. To get firebase credentials, on your firebase project, go to project settings -> service account -> firebase admin
+6. There should be a button to generate your credentials
+7. After you receive your credential (in the form of a json file), you can insert your values into the environment variable
+8. If you are still having difficulties, you can open the file src/firebase.py and change the following line with your credentials
+```bash
+  cert = {
+    "type": "service_account",
+    "project_id": os.environ.get("FIREBASE_PROJECT_ID"),
+    "private_key_id": "83f66b2d3c0bc913f18f35ba5ba0fe64ba78c0d0",
+    "private_key": os.environ.get("FIREBASE_PRIVATE_KEY").replace('\\n', '\n'),
+    "client_email": os.environ.get("FIREBASE_CLIENT_EMAIL"),
+    "client_id": "106555114812167066499",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-hxjaz%40test-firebase-6fa94.iam.gserviceaccount.com"
+  }
+```
 ## Run Locally
 
 Clone the project

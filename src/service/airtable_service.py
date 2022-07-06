@@ -1,8 +1,7 @@
 from dataclasses import dataclass
 import requests
-from .util import *
-from .update_class import UpdateExperience
-from .create_class import NewExperience
+from ..util import *
+from ..models.experience import UpdateExperience, NewExperience
 
 @dataclass
 class Airtable:
